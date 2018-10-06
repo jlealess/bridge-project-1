@@ -4,6 +4,7 @@ import ReactDOM from "react-dom";
 import Login from "./Login.js";
 import Profile from "./Profile.js";
 import Button from "./Button.js";
+import { apiKey } from './setup/keys';
 
 class App extends Component {
   constructor() {
@@ -25,9 +26,6 @@ class App extends Component {
     this.handleLogOut = this.handleLogOut.bind(this);
     this.setUserInLocalStorage = this.setUserInLocalStorage.bind(this);
   }
-
-  apiKey = "5537b38a9cd2c8306bff3cda9fd1c4731e3e9ca3";
-  accessToken = `?access_token=${this.apiKey}`;
 
   handleChange(e) {
     this.setState({
@@ -59,7 +57,7 @@ class App extends Component {
   }
 
   getGithubUser(username) {
-    return fetch(`https://api.github.com/users/${username}${this.accessToken}`);
+    return fetch(`https://api.github.com/users/${username}`);
   }
 
   getGithubFollowing(url) {
@@ -98,7 +96,7 @@ class App extends Component {
       if (this.state.loggedIn) {
         this.setUserInLocalStorage();
         this.getGithubFollowing(
-          `${this.state.profile.followers_url}${this.accessToken}`
+          `${this.state.profile.followers_url}`
         )
           .then(res => res.json())
           .then(data => this.setState({ followers: data }));
