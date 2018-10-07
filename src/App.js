@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
-import ReactDOM from "react-dom";
 import Login from "./Login.js";
 import Profile from "./Profile.js";
-import Button from "./Button.js";
 import { apiKey } from './setup/keys';
 
 class App extends Component {
@@ -26,6 +24,8 @@ class App extends Component {
     this.handleLogOut = this.handleLogOut.bind(this);
     this.setUserInLocalStorage = this.setUserInLocalStorage.bind(this);
   }
+
+  accessToken = `?access_token=${apiKey}`;
 
   handleChange(e) {
     this.setState({
@@ -57,7 +57,7 @@ class App extends Component {
   }
 
   getGithubUser(username) {
-    return fetch(`https://api.github.com/users/${username}`);
+    return fetch(`https://api.github.com/users/${username}${this.accessToken}`);
   }
 
   getGithubFollowing(url) {
@@ -96,7 +96,7 @@ class App extends Component {
       if (this.state.loggedIn) {
         this.setUserInLocalStorage();
         this.getGithubFollowing(
-          `${this.state.profile.followers_url}`
+          `${this.state.profile.followers_url}${this.accessToken}`
         )
           .then(res => res.json())
           .then(data => this.setState({ followers: data }));
@@ -105,13 +105,10 @@ class App extends Component {
         )
           .then(res => res.json())
           .then(events => {
-            const forkEvents = events.filter(
-              event => event.type === "ForkEvent"
+            const filteredEvents = events.filter(
+              event => event.type === "ForkEvent" || event.type === "PullRequestEvent"
             );
-            this.setState({
-              forkEvents,
-              events
-            });
+            this.setState({ events: filteredEvents });
           });
       }
     }
@@ -127,7 +124,7 @@ class App extends Component {
             data={this.state.profile}
             handleClick={this.handleLogOut}
             followers={this.state.followers}
-            forkEvents={this.state.forkEvents}
+            events={this.state.events}
           />
         ) : (
             <Login
