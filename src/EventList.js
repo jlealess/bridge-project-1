@@ -1,24 +1,18 @@
 import React from "react";
-import Event from "./Event";
-
-const eventType = event => {
-    if (event.type === "ForkEvent") {
-        return "Fork"
-    } else if (event.type === "PullRequestEvent") {
-        return "Pull Request"
-    }
-}
+import PullRequestEvent from "./PullRequestEvent";
+import ForkEvent from './ForkEvent';
 
 const EventList = props => {
     return (
         <React.Fragment>
             <h2>Recent activity</h2>
             {props.events.length > 0 ?             
-            <ul>
+            <ul className="event-cards">
                 {props.events.map((event, i) => {
                     return (
-                        <li key={event.id}>
-                            <Event event={event} />
+                        <li key={event.id} className="event-card">
+                            {event.type === "PullRequestEvent" && <PullRequestEvent event={event} />}
+                            {event.type === "ForkEvent" && <ForkEvent event={event} />}
                         </li>
                     );
                 })}
