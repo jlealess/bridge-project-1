@@ -11,7 +11,6 @@ const Profile = props => {
             <img src={props.data.avatar_url} alt={`${login}`} />
             <Button handleClick={props.handleClick} value="Logout" />
             <EventList events={props.events} />
-            <FollowingList followers={props.followers} />
         </div>
     );
 };

@@ -1,4 +1,13 @@
 import React from "react";
+import Event from "./Event";
+
+const eventType = event => {
+    if (event.type === "ForkEvent") {
+        return "Fork"
+    } else if (event.type === "PullRequestEvent") {
+        return "Pull Request"
+    }
+}
 
 const EventList = props => {
     return (
@@ -9,9 +18,7 @@ const EventList = props => {
                 {props.events.map((event, i) => {
                     return (
                         <li key={event.id}>
-                            <p>
-                                <a href={event.repo.url}>{event.repo.name}</a>
-                            </p>
+                            <Event event={event} />
                         </li>
                     );
                 })}
