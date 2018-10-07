@@ -61,7 +61,9 @@ class App extends Component {
   }
 
   getGithubFollowing(url) {
-    return fetch(url);
+    return fetch(`${url}${this.accessToken}`)
+      .then(res => res.json())
+      .then(data => this.setState({ followers: data }));
   }
 
   getGithubEvents(url) {
@@ -95,21 +97,28 @@ class App extends Component {
     if (prevState.loggedIn !== this.state.loggedIn) {
       if (this.state.loggedIn) {
         this.setUserInLocalStorage();
-        this.getGithubFollowing(
-          `${this.state.profile.followers_url}${this.accessToken}`
-        )
-          .then(res => res.json())
-          .then(data => this.setState({ followers: data }));
+        this.getGithubFollowing(this.state.profile.followers_url);
+
         this.getGithubEvents(
           `https://api.github.com/users/${this.state.username}/events`
         )
           .then(res => res.json())
           .then(events => {
-            const filteredEvents = events.filter(
+            return events.filter(
               event => event.type === "ForkEvent" || event.type === "PullRequestEvent"
-            );
-            this.setState({ events: filteredEvents });
-          });
+            )
+          }).then(data => {
+            const events = data.map(event => {
+              if (event.type === "PullRequestEvent") {
+                return fetch(event.payload.pull_request.url)
+                .then(res => res.json())
+                .then(data =>  ({...event, status: data.state, title: data.title}))
+              } else {
+                return event
+              }
+            });
+            Promise.all([...events]).then(events => this.setState({ events }));
+          })
       }
     }
   }
@@ -117,24 +126,24 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-      <div className="App-header">
-        <h1>Github Developer</h1>
-        {this.state.loggedIn ? (
-          <Profile
-            data={this.state.profile}
-            handleClick={this.handleLogOut}
-            followers={this.state.followers}
-            events={this.state.events}
-          />
-        ) : (
-            <Login
-              handleChange={this.handleChange}
-              username={this.state.username}
-              firstName={this.state.firstName}
-              handleLogin={this.handleLogin}
+        <div className="App-header">
+          <h1>Github Developer</h1>
+          {this.state.loggedIn ? (
+            <Profile
+              data={this.state.profile}
+              handleClick={this.handleLogOut}
+              followers={this.state.followers}
+              events={this.state.events}
             />
-          )}
-      </div>
+          ) : (
+              <Login
+                handleChange={this.handleChange}
+                username={this.state.username}
+                firstName={this.state.firstName}
+                handleLogin={this.handleLogin}
+              />
+            )}
+        </div>
       </div>
     );
   }
