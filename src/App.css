@@ -2,31 +2,76 @@
   text-align: center;
 }
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 40vmin;
-}
-
 .App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+  align-items: center;
+  background-color: #fefefe;
+  color: #2b2b2b;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
   font-size: calc(10px + 2vmin);
+  justify-content: center;
+  min-height: 100vh;
+}
+
+.card {
+  background: #F6F8FA;
+  margin: 0 0 .5em;
+  padding: 1em;
+  position: relative;
+}
+
+.event__status--closed {
+  color: green;
+  border: 1px solid green;
+}
+
+.event__status--open {
+  color: yellow;
+  border: 1px solid yellow;
+}
+
+.event__status,
+.event__type {
+  display: inline-block;
+  font-size: .8em;
+  font-weight: bold;
+  padding: 5px 8px;
+}
+
+.event__type {
+  border: 1px solid #2b2b2b;
+  margin-right: 10px;
+  text-transform: uppercase;
+}
+
+.profile {
+  max-width: 800px;
+}
+
+.profile img {
+  border-radius: 50%;
+  max-width: 200px;
+}
+
+button {
+  background: green;
+  border: none;
   color: white;
+  display: block;
+  margin: 0 auto;
 }
 
-.App-link {
-  color: #61dafb;
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  text-align: left;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+h1, h2, h3, h4, h5, h6, p {
+  margin-top: 0;
+}
+
+p:last-of-type {
+  margin-bottom: 0;
 }

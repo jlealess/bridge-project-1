@@ -1,18 +1,14 @@
 import React from "react";
 
-const TextField = props => {
-    return (
-        <React.Fragment>
-            <label htmlFor={props.id}>{props.label}</label>
-            <input
-                type="text"
-                value={props.value}
-                onChange={props.handleChange}
-                name={props.name}
-                id={props.id}
-            />
-        </React.Fragment>
-    );
-};
-
-export default TextField;
+export default ({ value, handleChange, label, id, name }) => (
+    <React.Fragment>
+        <label htmlFor={id}>{label}</label>
+        <input
+            type="text"
+            value={value}
+            onChange={handleChange}
+            name={name}
+            id={id}
+        />
+    </React.Fragment>
+);
