@@ -4,7 +4,7 @@ const ForkEvent = props => (
     <div className="card card--event">
         <p className="event__type">Fork</p>
         <p>
-            <a href={props.event.repo.url}>{props.event.repo.name}</a>
+            <a href={props.event.repo.url} className="event__link">{props.event.repo.name}</a>
         </p>
         <p>Forked to <a href={props.event.payload.forkee.clone_url}>
             {(props.event.payload.forkee.clone_url).replace('https://github.com/', '').replace('.git', '')}

@@ -1,21 +1,16 @@
 import React from "react";
 
-const FollowingList = props => {
-    return (
-        <React.Fragment>
-            <h2>My followers</h2>
-            <ul>
-                {props.followers.map((follower, i) => {
-                    return (
-                        <li key={`follower-${i}`}>
-                            <img src={follower.avatar_url} alt="" />
-                            <p>{follower.login}</p>
-                        </li>
-                    );
-                })}
-            </ul>
-        </React.Fragment>
-    );
-};
-
-export default FollowingList;
+export default ({ followers }) => (
+    <div className="followers">
+        <h2>My followers</h2>
+        <ul className="followers__list">
+            {followers.length > 0 ? followers.map((follower, i) => (
+                <li key={follower.id} className="follower">
+                    <a href={follower.html_url}>
+                        <img src={follower.avatar_url} alt={`${follower.login}'s avatar`} className="follower__avatar" />
+                    </a>
+                </li>
+            )) : <p>No followers yet</p>}
+        </ul>
+    </div>
+);

@@ -4,13 +4,13 @@ import ForkEvent from './ForkEvent';
 
 const EventList = props => {
     return (
-        <React.Fragment>
+        <div className="events">
             <h2>Recent activity</h2>
             {props.events.length > 0 ?             
-            <ul className="event-cards">
+            <ul className="events__list">
                 {props.events.map((event, i) => {
                     return (
-                        <li key={event.id} className="event-card">
+                        <li key={event.id} className="events__list__item">
                             {event.type === "PullRequestEvent" && <PullRequestEvent event={event} />}
                             {event.type === "ForkEvent" && <ForkEvent event={event} />}
                         </li>
@@ -18,7 +18,7 @@ const EventList = props => {
                 })}
             </ul>
             : <p>Sorry, this user has no active repos.</p>}
-        </React.Fragment>
+        </div>
     );
 };
 

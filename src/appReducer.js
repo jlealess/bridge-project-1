@@ -9,6 +9,7 @@ const INITIAL_APP_STATE = {
 }
 
 const APP_ACTIONS = {
+    FETCH_FOLLOWERS: 'app/FETCH_FOLLOWERS',
     SET_USERNAME: 'app/SET_USERNAME',
     SET_EVENTS: 'app/SET_EVENTS',
     USER_LOGIN: 'app/USER_LOGIN',
@@ -41,7 +42,7 @@ export const fetchEvents = eventsUrl => dispatch => {
                 return event
               }
             });
-              Promise.all([...events]).then(events => dispatch(handleSetEvents(events)));
+            Promise.all([...events]).then(events => dispatch(handleSetEvents(events)));
           })
 };
 
@@ -77,12 +78,29 @@ export const loginUser = username => dispatch => {
         setUserInLocalStorage(username);
     };
     return getGithubUser(username)
-      .then(res => res.json())
-      .then(profile => dispatch(handleLogin(profile)))
+        .then(res => res.json())
+        .then(profile => dispatch(handleLogin(profile)))
+}
+
+const saveFollowers = followers => ({
+    type: APP_ACTIONS.FETCH_FOLLOWERS,
+    payload: followers
+});
+
+export const fetchFollowers = followersUrl => dispatch => {
+    return fetch(`${followersUrl}${accessToken}`)
+        .then(res => res.json())
+        .then(followers => dispatch(saveFollowers(followers)));
 }
 
 export const appReducer = (state = INITIAL_APP_STATE, action) => {
     switch(action.type) {
+        case APP_ACTIONS.FETCH_FOLLOWERS: {
+            return {
+                ...state,
+                followers: action.payload
+            }
+        }
         case APP_ACTIONS.SET_USERNAME: {
             return {
                 ...state,
