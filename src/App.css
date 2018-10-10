@@ -104,6 +104,16 @@ ul {
   text-transform: uppercase;
 }
 
+.followers {
+  border-top: 1px solid #e1e4e8;
+  padding-top: 1em;
+  margin-top: 1.25em;
+}
+
+.followers h2 {
+  font-size: 1.15em;
+}
+
 .followers__list {
   display: grid;
   grid-gap: 5px;

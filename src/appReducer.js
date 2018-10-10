@@ -6,19 +6,30 @@ const INITIAL_APP_STATE = {
     followers: [],
     events: [],
     loggedIn: false,
+    filters: {
+        ForkEvent: true,
+        PullRequestEvent: true,
+    }
 }
 
 const APP_ACTIONS = {
-    FETCH_FOLLOWERS: 'app/FETCH_FOLLOWERS',
-    SET_USERNAME: 'app/SET_USERNAME',
-    SET_EVENTS: 'app/SET_EVENTS',
-    USER_LOGIN: 'app/USER_LOGIN',
-    USER_LOGOUT: 'app/USER_LOGOUT',
-}
+    FETCH_FOLLOWERS: "app/FETCH_FOLLOWERS",
+    SET_USERNAME: "app/SET_USERNAME",
+    SET_EVENTS: "app/SET_EVENTS",
+    TOGGLE_FORK_EVENTS: "app/TOGGLE_FORK_EVENTS",
+    TOGGLE_PULL_REQUEST_EVENTS: "app/TOGGLE_PULL_REQUEST_EVENTS",
+    USER_LOGIN: "app/USER_LOGIN",
+    USER_LOGOUT: "app/USER_LOGOUT"
+};
 
 const getGithubUser = username => {
     return fetch(`https://api.github.com/users/${username}${accessToken}`);
 }
+
+const saveFollowers = followers => ({
+  type: APP_ACTIONS.FETCH_FOLLOWERS,
+  payload: followers
+});
 
 const setUserInLocalStorage = username => {
     localStorage.setItem("ghDevUsername", username);
@@ -46,19 +57,20 @@ export const fetchEvents = eventsUrl => dispatch => {
           })
 };
 
-export const setUserFromLocalStorage = username => ({
-    type: APP_ACTIONS.SET_USERNAME,
-    payload: username,
-});
+export const fetchFollowers = followersUrl => dispatch => {
+  return fetch(`${followersUrl}${accessToken}`)
+    .then(res => res.json())
+    .then(followers => dispatch(saveFollowers(followers)));
+};
 
 export const handleChangeUsername = e => ({
     type: APP_ACTIONS.SET_USERNAME,
     payload: e.target.value,
 });
 
-export const handleLogin = profile => ({ 
-    type: APP_ACTIONS.USER_LOGIN, 
-    payload: profile 
+export const handleLogin = profile => ({
+    type: APP_ACTIONS.USER_LOGIN,
+    payload: profile
 });
 
 export const handleLogout = () => {
@@ -74,24 +86,26 @@ export const handleSetEvents = events => ({
 });
 
 export const loginUser = username => dispatch => {
-    if (!localStorage.getItem("ghDevUsername")) {
-        setUserInLocalStorage(username);
-    };
-    return getGithubUser(username)
-        .then(res => res.json())
-        .then(profile => dispatch(handleLogin(profile)))
-}
+  if (!localStorage.getItem("ghDevUsername")) {
+    setUserInLocalStorage(username);
+  }
+  return getGithubUser(username)
+    .then(res => res.json())
+    .then(profile => dispatch(handleLogin(profile)));
+};
 
-const saveFollowers = followers => ({
-    type: APP_ACTIONS.FETCH_FOLLOWERS,
-    payload: followers
+export const setUserFromLocalStorage = username => ({
+    type: APP_ACTIONS.SET_USERNAME,
+    payload: username,
 });
 
-export const fetchFollowers = followersUrl => dispatch => {
-    return fetch(`${followersUrl}${accessToken}`)
-        .then(res => res.json())
-        .then(followers => dispatch(saveFollowers(followers)));
-}
+export const toggleForkEventsFilter = () => ({
+  type: APP_ACTIONS.TOGGLE_FORK_EVENTS
+});
+
+export const togglePullRequestEventsFilter = () => ({
+    type: APP_ACTIONS.TOGGLE_PULL_REQUEST_EVENTS
+});
 
 export const appReducer = (state = INITIAL_APP_STATE, action) => {
     switch(action.type) {
@@ -101,10 +115,28 @@ export const appReducer = (state = INITIAL_APP_STATE, action) => {
                 followers: action.payload
             }
         }
+        case APP_ACTIONS.SET_EVENTS: {
+            return {
+                ...state,
+                events: action.payload
+            }
+        }
         case APP_ACTIONS.SET_USERNAME: {
             return {
                 ...state,
                 username: action.payload
+            }
+        }
+        case APP_ACTIONS.TOGGLE_FORK_EVENTS: {
+            return {
+                ...state,
+                filters: {...state.filters, ForkEvent: !state.filters.ForkEvent }
+            }
+        }
+        case APP_ACTIONS.TOGGLE_PULL_REQUEST_EVENTS: {
+            return {
+                ...state,
+                filters: { ...state.filters, PullRequestEvent: !state.filters.PullRequestEvent }
             }
         }
         case APP_ACTIONS.USER_LOGIN: {
@@ -119,12 +151,6 @@ export const appReducer = (state = INITIAL_APP_STATE, action) => {
                 ...state,
                 profile: {},
                 loggedIn: false
-            }
-        }
-        case APP_ACTIONS.SET_EVENTS: {
-            return {
-                ...state,
-                events: action.payload
             }
         }
         default: {

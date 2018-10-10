@@ -3,7 +3,16 @@ import { connect } from "react-redux";
 import './App.css';
 import Login from "./Login.js";
 import Profile from "./Profile.js";
-import { handleChangeUsername, setUserFromLocalStorage, loginUser, handleLogout, fetchEvents, fetchFollowers } from "./appReducer";
+import {
+  fetchEvents,
+  fetchFollowers,
+  handleChangeUsername,
+  handleLogout,
+  loginUser,
+  setUserFromLocalStorage,
+  toggleForkEventsFilter,
+  togglePullRequestEventsFilter,
+} from "./appReducer";
 
 class App extends Component {
   componentDidMount() {
@@ -31,18 +40,22 @@ class App extends Component {
           <h1>Github Developer</h1>
         </div>
         <div className="App-body">
-        {this.props.loggedIn ? <Profile
-          {...this.props.profile}
-          events={this.props.events}
-          followers={this.props.followers}
-          handleLogout={this.props.handleLogout}
-        /> :
-          <Login
-            handleChangeUsername={this.props.handleChangeUsername}
-            handleLogin={() => this.props.loginUser(this.props.username)}
-            username={this.props.username}
-          />
-        }
+          {this.props.loggedIn ? (
+            <Profile
+              {...this.props.profile}
+              events={this.props.events}
+              followers={this.props.followers}
+              handleLogout={this.props.handleLogout}
+              toggleForkEventsFilter={() => this.props.toggleForkEventsFilter()}
+              togglePullRequestEventsFilter={() => this.props.togglePullRequestEventsFilter()}
+            />
+          ) : (
+            <Login
+              handleChangeUsername={this.props.handleChangeUsername}
+              handleLogin={() => this.props.loginUser(this.props.username)}
+              username={this.props.username}
+            />
+          )}
         </div>
       </div>;
   }
@@ -53,12 +66,14 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = {
-  handleChangeUsername,
-  loginUser,
-  handleLogout,
   fetchEvents,
-  setUserFromLocalStorage,
   fetchFollowers,
+  handleChangeUsername,
+  handleLogout,
+  loginUser,
+  setUserFromLocalStorage,
+  toggleForkEventsFilter,
+  togglePullRequestEventsFilter,
 };
 
 export default connect(
