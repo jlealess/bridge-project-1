@@ -1,18 +1,28 @@
 a {
-  color: inherit;
+  color: #0366d6;
   text-decoration: none;
 }
 
 a:hover {
-  color: #0366d6;
+  text-decoration: underline;
 }
 
 button {
-  background: green;
-  border: none;
-  color: white;
+  background-color: #eff3f6;
+  background-image: linear-gradient(-180deg,#fafbfc,#eff3f6 90%);
+  border: 1px solid rgba(27,31,35,0.2);
+  border-radius: 3px;
+  color: #24292e;
   display: block;
-  margin: 0 auto;
+  font-size: 1em;
+  font-weight: bold;
+  margin: 10px 0;
+  padding: 10px;
+  text-align: center;
+}
+
+button.full-width {
+  width: 100%;
 }
 
 h1, h2, h3, h4, h5, h6, p {
@@ -84,6 +94,7 @@ ul {
   display: inline-block;
   font-size: .8em;
   font-weight: bold;
+  margin-bottom: 18px;
   padding: 5px 8px;
 }
 
@@ -112,5 +123,9 @@ ul {
   display: grid;
   grid-column-gap: 30px;
   grid-template-columns: 250px 1fr;
+}
+
+.profile__avatar {
+  border-radius: 6px;
 }
 
