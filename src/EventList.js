@@ -1,8 +1,6 @@
 import React from "react";
-// import PullRequestEvent from "./PullRequestEvent";
-// import ForkEvent from './ForkEvent';
 import Event from "./Event";
-import Button from "./Button";
+import ToggleContainer from './ToggleContainer';
 
 export default ({
   events,
@@ -12,30 +10,20 @@ export default ({
 }) => (
   <div className="events">
     <h2>Recent activity</h2>
-    <div className="toggle-container">
-        <p className="toggle-container__label">
-            Filter:
-        </p>
-        <Button 
-            value="Toggle Fork Events" 
-            handleClick={toggleForkEventsFilter} 
-            className={`filter-toggle ${filters.ForkEvent ? "filter-toggle--active" : "filter-toggle--inactive"}`}
-        />
-        <Button
-        value="Toggle Pull Request Events"
-        handleClick={togglePullRequestEventsFilter}
-        className={`filter-toggle ${filters.PullRequestEvent ? "filter-toggle--active" : "filter-toggle--inactive"}`}
-        />
-    </div>
+    <ToggleContainer
+        toggleForkEventsFilter={toggleForkEventsFilter}
+        togglePullRequestEventsFilter={togglePullRequestEventsFilter}
+        filters={filters}
+    />
     {events.length > 0 ? (
       <ul className="events__list">
-        {events.filter(event => filters[event.type]).map((event, i) => {
+        {events.filter(event => filters[event.type]).length > 0 ? events.filter(event => filters[event.type]).map((event, i) => {
           return (
             <li key={event.id} className="events__list__item">
               <Event event={event} />
             </li>
           );
-        })}
+        }) : <p>Whoops, no events match your criteria!</p>}
       </ul>
     ) : (
       <p>Sorry, this user has no active repos.</p>
