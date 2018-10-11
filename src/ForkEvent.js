@@ -16,6 +16,6 @@ export default ({ event }) => (
             {(event.payload.forkee.full_name)}
         </a>
         </p>
-        <p>Updated {date(event.updated_at ? event.updated_at : event.created_at)}</p>
+        <p className="event__date">Updated {date(event.updated_at ? event.updated_at : event.created_at)}</p>
     </div>
 );

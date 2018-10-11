@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import './App.css';
 import Login from "./Login.js";
 import Profile from "./Profile.js";
+import AppHeader from './AppHeader';
 import {
   fetchEvents,
   fetchFollowers,
@@ -36,10 +37,8 @@ class App extends Component {
 
   render() {
     return <div className="App">
-        <div className="App-header">
-          <h1>Github Developer</h1>
-        </div>
-        <div className="App-body">
+        <AppHeader />
+        <div className="App-body wrapper">
           {this.props.loggedIn ? (
             <Profile
               {...this.props.profile}

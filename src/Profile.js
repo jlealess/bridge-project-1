@@ -13,14 +13,16 @@ export default ({
   togglePullRequestEventsFilter,
 }) => (
   <div className="profile">
-    <div>
-      <h2>Hello, {login}</h2>
-      <img src={avatar_url} alt={`${login}`} className="profile__avatar" />
-      <Button
-        handleClick={handleLogout}
-        value="Logout"
-        className="full-width"
-      />
+    <div className="user">
+      <div className="user__info">
+        <img src={avatar_url} alt={`${login}`} className="profile__avatar" />
+        <h2 className="heading heading--light heading--secondary mb-0">Hello, {login}</h2>
+        <Button
+          handleClick={handleLogout}
+          value="Logout"
+          className="full-width"
+        />
+      </div>
       <FollowingList followers={followers} />
     </div>
     <EventList
