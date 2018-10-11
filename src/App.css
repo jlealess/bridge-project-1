@@ -82,6 +82,17 @@ ul {
   padding: 1em 0;
 }
 
+.App-header .wrapper {
+  align-items: center;
+  display: flex;
+}
+
+.App-header__logo {
+  border-radius: 50%;
+  margin-right: 10px;
+  width: 40px;
+}
+
 .card {
   padding: 1em;
   position: relative;
