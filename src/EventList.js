@@ -1,7 +1,8 @@
 import React from "react";
-import PullRequestEvent from "./PullRequestEvent";
-import ForkEvent from './ForkEvent';
-import Button from './Button';
+// import PullRequestEvent from "./PullRequestEvent";
+// import ForkEvent from './ForkEvent';
+import Event from "./Event";
+import Button from "./Button";
 
 export default ({
   events,
@@ -20,10 +21,7 @@ export default ({
         {events.map((event, i) => {
           return (
             <li key={event.id} className="events__list__item">
-              {event.type === "PullRequestEvent" && (
-                <PullRequestEvent event={event} />
-              )}
-              {event.type === "ForkEvent" && <ForkEvent event={event} />}
+              <Event event={event} />
             </li>
           );
         })}
