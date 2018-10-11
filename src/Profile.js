@@ -6,6 +6,7 @@ import Button from "./Button.js";
 export default ({
   avatar_url,
   events,
+  filters,
   followers,
   handleLogout,
   login,
@@ -15,7 +16,7 @@ export default ({
   <div className="profile">
     <div className="user">
       <div className="user__info">
-        <img src={avatar_url} alt={`${login}`} className="profile__avatar" />
+        <img src={avatar_url ? avatar_url : "./assets/user-avatar.png"} alt={`${login}`} className="profile__avatar" />
         <h2 className="heading heading--light heading--secondary mb-0">Hello, {login}</h2>
         <Button
           handleClick={handleLogout}
@@ -27,6 +28,7 @@ export default ({
     </div>
     <EventList
       events={events}
+      filters={filters}
       toggleForkEventsFilter={toggleForkEventsFilter}
       togglePullRequestEventsFilter={togglePullRequestEventsFilter}
     />

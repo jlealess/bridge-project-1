@@ -17,13 +17,13 @@ import {
 
 class App extends Component {
   componentDidMount() {
-    // if (
-    //   localStorage.getItem("ghDevLoggedIn") && localStorage.getItem("ghDevUsername")
-    // ) {
-    //   const username = localStorage.getItem("ghDevUsername");
-    //   this.props.setUserFromLocalStorage(username);
-    //   this.props.loginUser(username);
-    // }
+    if (
+      localStorage.getItem("ghDevLoggedIn") && localStorage.getItem("ghDevUsername")
+    ) {
+      const username = localStorage.getItem("ghDevUsername");
+      this.props.setUserFromLocalStorage(username);
+      this.props.loginUser(username);
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -43,6 +43,7 @@ class App extends Component {
             <Profile
               {...this.props.profile}
               events={this.props.events}
+              filters={this.props.filters}
               followers={this.props.followers}
               handleLogout={this.props.handleLogout}
               toggleForkEventsFilter={() => this.props.toggleForkEventsFilter()}
@@ -53,6 +54,7 @@ class App extends Component {
               handleChangeUsername={this.props.handleChangeUsername}
               handleLogin={() => this.props.loginUser(this.props.username)}
               username={this.props.username}
+              loginErrorMessage={this.props.loginErrorMessage}
             />
           )}
         </div>

@@ -6,6 +6,7 @@ const INITIAL_APP_STATE = {
     followers: [],
     events: [],
     loggedIn: false,
+    loginErrorMessage: "",
     filters: {
         ForkEvent: true,
         PullRequestEvent: true,
@@ -14,6 +15,7 @@ const INITIAL_APP_STATE = {
 
 const APP_ACTIONS = {
     FETCH_FOLLOWERS: "app/FETCH_FOLLOWERS",
+    SET_LOGIN_ERROR: "app/SET_LOGIN_ERROR",
     SET_USERNAME: "app/SET_USERNAME",
     SET_EVENTS: "app/SET_EVENTS",
     TOGGLE_FORK_EVENTS: "app/TOGGLE_FORK_EVENTS",
@@ -25,6 +27,11 @@ const APP_ACTIONS = {
 const getGithubUser = username => {
     return fetch(`https://api.github.com/users/${username}${accessToken}`);
 }
+
+const handleLoginError = () => ({
+  type: APP_ACTIONS.SET_LOGIN_ERROR,
+  payload: "Please enter a GitHub username"
+});
 
 const saveFollowers = followers => ({
   type: APP_ACTIONS.FETCH_FOLLOWERS,
@@ -89,9 +96,13 @@ export const loginUser = username => dispatch => {
   if (!localStorage.getItem("ghDevUsername")) {
     setUserInLocalStorage(username);
   }
-  return getGithubUser(username)
-    .then(res => res.json())
-    .then(profile => dispatch(handleLogin(profile)));
+  if (username) {
+      return getGithubUser(username)
+        .then(res => res.json())
+        .then(profile => dispatch(handleLogin(profile)));
+  } else {
+      dispatch(handleLoginError());
+  }
 };
 
 export const setUserFromLocalStorage = username => ({
@@ -121,10 +132,17 @@ export const appReducer = (state = INITIAL_APP_STATE, action) => {
                 events: action.payload
             }
         }
+        case APP_ACTIONS.SET_LOGIN_ERROR: {
+            return {
+                ...state,
+                loginErrorMessage: action.payload,
+            }
+        }
         case APP_ACTIONS.SET_USERNAME: {
             return {
                 ...state,
-                username: action.payload
+                loginErrorMessage: "",
+                username: action.payload,
             }
         }
         case APP_ACTIONS.TOGGLE_FORK_EVENTS: {
@@ -143,6 +161,7 @@ export const appReducer = (state = INITIAL_APP_STATE, action) => {
             return {
                 ...state,
                 loggedIn: true,
+                loginErrorMessage: "",
                 profile: action.payload
             }
         }

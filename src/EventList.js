@@ -6,19 +6,30 @@ import Button from "./Button";
 
 export default ({
   events,
+  filters,
   toggleForkEventsFilter,
   togglePullRequestEventsFilter
 }) => (
   <div className="events">
     <h2>Recent activity</h2>
-    <Button value="Toggle Fork Events" handleClick={toggleForkEventsFilter} />
-    <Button
-      value="Toggle Pull Request Events"
-      handleClick={togglePullRequestEventsFilter}
-    />
+    <div className="toggle-container">
+        <p className="toggle-container__label">
+            Filter:
+        </p>
+        <Button 
+            value="Toggle Fork Events" 
+            handleClick={toggleForkEventsFilter} 
+            className={`filter-toggle ${filters.ForkEvent ? "filter-toggle--active" : "filter-toggle--inactive"}`}
+        />
+        <Button
+        value="Toggle Pull Request Events"
+        handleClick={togglePullRequestEventsFilter}
+        className={`filter-toggle ${filters.PullRequestEvent ? "filter-toggle--active" : "filter-toggle--inactive"}`}
+        />
+    </div>
     {events.length > 0 ? (
       <ul className="events__list">
-        {events.map((event, i) => {
+        {events.filter(event => filters[event.type]).map((event, i) => {
           return (
             <li key={event.id} className="events__list__item">
               <Event event={event} />
