@@ -6,7 +6,7 @@ const date = date => {
   return updatedDate.toLocaleDateString("en-US", options);
 };
 
-export default ({ event }) => (
+const Event = ({ event }) => (
   <div className="card card--event">
     <p className="event__type">{event.type === "ForkEvent" ? "Fork" : "Pull Request"}</p>
     {event.status && (
@@ -31,3 +31,5 @@ export default ({ event }) => (
     </p>
   </div>
 );
+
+export default Event;

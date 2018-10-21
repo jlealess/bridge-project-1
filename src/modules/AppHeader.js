@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default () => (
+const AppHeader = () => (
     <div className="App-header">
         <div className="wrapper">
             <img src="./assets/ghost-cat-avatar.jpg" alt="" className="App-header__logo" />
@@ -8,3 +8,5 @@ export default () => (
         </div>
     </div>
 )
+
+export default AppHeader;

@@ -2,7 +2,7 @@ import React from "react";
 import Event from "./Event";
 import ToggleContainer from './ToggleContainer';
 
-export default ({
+const EventList = ({
   events,
   filters,
   toggleForkEventsFilter,
@@ -15,9 +15,9 @@ export default ({
         togglePullRequestEventsFilter={togglePullRequestEventsFilter}
         filters={filters}
     />
-    {events.length > 0 ? (
+    {events.length ? (
       <ul className="events__list">
-        {events.filter(event => filters[event.type]).length > 0 ? events.filter(event => filters[event.type]).map((event, i) => {
+        {events.filter(event => filters[event.type]).length ? events.filter(event => filters[event.type]).map((event, i) => {
           return (
             <li key={event.id} className="events__list__item">
               <Event event={event} />
@@ -30,3 +30,5 @@ export default ({
     )}
   </div>
 );
+
+export default EventList;

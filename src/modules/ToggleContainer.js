@@ -1,7 +1,7 @@
 import React from 'react';
 import Button from './Button';
 
-export default ({
+const ToggleContainer = ({
     toggleForkEventsFilter,
     togglePullRequestEventsFilter,
     filters
@@ -22,3 +22,5 @@ export default ({
         />
     </div>
 );
+
+export default ToggleContainer;

@@ -1,6 +1,6 @@
 import React from "react";
 
-export default ({ value, handleChange, label, id, name, required }) => (
+const TextField = ({ value, handleChange, label, id, name }) => (
     <React.Fragment>
         <label htmlFor={id} className="form__label">{label}</label>
         <input
@@ -13,3 +13,5 @@ export default ({ value, handleChange, label, id, name, required }) => (
         />
     </React.Fragment>
 );
+
+export default TextField;
