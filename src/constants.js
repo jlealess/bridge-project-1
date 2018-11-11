@@ -1,4 +1,4 @@
- export const APP_ACTIONS = {
+export const APP_ACTIONS = {
   FETCH_FOLLOWERS: "app/FETCH_FOLLOWERS",
   SET_LOGIN_ERROR: "app/SET_LOGIN_ERROR",
   SET_USERNAME: "app/SET_USERNAME",
